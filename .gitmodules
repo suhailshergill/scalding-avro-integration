@@ -1,0 +1,9 @@
+[submodule "scalding"]
+	path = scalding
+	url = git@github.com:Tapad/scalding.git
+[submodule "scalding.avro"]
+	path = scalding.avro
+	url = git@github.com:Tapad/scalding.avro.git
+[submodule "cascading.avro"]
+	path = cascading.avro
+	url = git@github.com:Tapad/cascading.avro.git
