@@ -1,0 +1,16 @@
+@namespace("types")
+protocol GenericExample {
+
+  record Color {
+    int red;
+    int green;
+    int blue;
+    int alpha;
+  }
+
+  record Image {
+    int width;
+    int height;
+    array<Color> colors;
+  }
+}

@@ -1,0 +1,16 @@
+@namespace("types")
+protocol SpecificExample {
+  import schema "coordinates.avsc";
+
+  record ClickHistory {
+    string session_id;
+    array<Coordinates> pixels;
+  }
+
+  record Target {
+    string id;
+    Coordinates origin;
+    int radius;
+    array<ClickHistory> clicks;
+  }
+}

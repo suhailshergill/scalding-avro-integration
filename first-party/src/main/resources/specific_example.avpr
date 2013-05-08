@@ -1,0 +1,49 @@
+{
+  "protocol" : "SpecificExample",
+  "namespace" : "types",
+  "types" : [ {
+    "type" : "record",
+    "name" : "Coordinates",
+    "fields" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    } ]
+  }, {
+    "type" : "record",
+    "name" : "ClickHistory",
+    "fields" : [ {
+      "name" : "session_id",
+      "type" : "string"
+    }, {
+      "name" : "pixels",
+      "type" : {
+        "type" : "array",
+        "items" : "Coordinates"
+      }
+    } ]
+  }, {
+    "type" : "record",
+    "name" : "Target",
+    "fields" : [ {
+      "name" : "id",
+      "type" : "string"
+    }, {
+      "name" : "origin",
+      "type" : "Coordinates"
+    }, {
+      "name" : "radius",
+      "type" : "int"
+    }, {
+      "name" : "clicks",
+      "type" : {
+        "type" : "array",
+        "items" : "ClickHistory"
+      }
+    } ]
+  } ],
+  "messages" : {
+  }
+}
