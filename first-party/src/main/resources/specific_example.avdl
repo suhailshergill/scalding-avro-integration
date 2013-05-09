@@ -2,15 +2,20 @@
 protocol SpecificExample {
   import schema "coordinates.avsc";
 
-  record ClickHistory {
-    string session_id;
-    array<Coordinates> pixels;
+  record Session {
+    string id;
+    array<Coordinates> clicks;
   }
 
   record Target {
     string id;
     Coordinates origin;
     int radius;
-    array<ClickHistory> clicks;
+  }
+
+  record Document {
+    string id;
+    array<Target> targets;
+    array<Session> sessions;
   }
 }

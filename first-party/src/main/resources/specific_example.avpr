@@ -13,12 +13,12 @@
     } ]
   }, {
     "type" : "record",
-    "name" : "ClickHistory",
+    "name" : "Session",
     "fields" : [ {
-      "name" : "session_id",
+      "name" : "id",
       "type" : "string"
     }, {
-      "name" : "pixels",
+      "name" : "clicks",
       "type" : {
         "type" : "array",
         "items" : "Coordinates"
@@ -36,11 +36,24 @@
     }, {
       "name" : "radius",
       "type" : "int"
+    } ]
+  }, {
+    "type" : "record",
+    "name" : "Document",
+    "fields" : [ {
+      "name" : "id",
+      "type" : "string"
     }, {
-      "name" : "clicks",
+      "name" : "targets",
       "type" : {
         "type" : "array",
-        "items" : "ClickHistory"
+        "items" : "Target"
+      }
+    }, {
+      "name" : "sessions",
+      "type" : {
+        "type" : "array",
+        "items" : "Session"
       }
     } ]
   } ],

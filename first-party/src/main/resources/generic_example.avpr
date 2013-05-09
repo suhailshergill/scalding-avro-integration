@@ -16,6 +16,9 @@
     }, {
       "name" : "alpha",
       "type" : "int"
+    }, {
+      "name" : "name",
+      "type" : [ "string", "null" ]
     } ]
   }, {
     "type" : "record",

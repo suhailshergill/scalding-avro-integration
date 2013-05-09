@@ -7,12 +7,11 @@ package types;
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class Target extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Target\",\"namespace\":\"types\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"origin\",\"type\":{\"type\":\"record\",\"name\":\"Coordinates\",\"fields\":[{\"name\":\"x\",\"type\":\"float\"},{\"name\":\"y\",\"type\":\"float\"}]}},{\"name\":\"radius\",\"type\":\"int\"},{\"name\":\"clicks\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"ClickHistory\",\"fields\":[{\"name\":\"session_id\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"pixels\",\"type\":{\"type\":\"array\",\"items\":\"Coordinates\"}}]}}}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Target\",\"namespace\":\"types\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"origin\",\"type\":{\"type\":\"record\",\"name\":\"Coordinates\",\"fields\":[{\"name\":\"x\",\"type\":\"float\"},{\"name\":\"y\",\"type\":\"float\"}]}},{\"name\":\"radius\",\"type\":\"int\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   @Deprecated public java.lang.String id;
   @Deprecated public types.Coordinates origin;
   @Deprecated public int radius;
-  @Deprecated public java.util.List<types.ClickHistory> clicks;
 
   /**
    * Default constructor.
@@ -22,11 +21,10 @@ public class Target extends org.apache.avro.specific.SpecificRecordBase implemen
   /**
    * All-args constructor.
    */
-  public Target(java.lang.String id, types.Coordinates origin, java.lang.Integer radius, java.util.List<types.ClickHistory> clicks) {
+  public Target(java.lang.String id, types.Coordinates origin, java.lang.Integer radius) {
     this.id = id;
     this.origin = origin;
     this.radius = radius;
-    this.clicks = clicks;
   }
 
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
@@ -36,7 +34,6 @@ public class Target extends org.apache.avro.specific.SpecificRecordBase implemen
     case 0: return id;
     case 1: return origin;
     case 2: return radius;
-    case 3: return clicks;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -47,7 +44,6 @@ public class Target extends org.apache.avro.specific.SpecificRecordBase implemen
     case 0: id = (java.lang.String)value$; break;
     case 1: origin = (types.Coordinates)value$; break;
     case 2: radius = (java.lang.Integer)value$; break;
-    case 3: clicks = (java.util.List<types.ClickHistory>)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -97,21 +93,6 @@ public class Target extends org.apache.avro.specific.SpecificRecordBase implemen
     this.radius = value;
   }
 
-  /**
-   * Gets the value of the 'clicks' field.
-   */
-  public java.util.List<types.ClickHistory> getClicks() {
-    return clicks;
-  }
-
-  /**
-   * Sets the value of the 'clicks' field.
-   * @param value the value to set.
-   */
-  public void setClicks(java.util.List<types.ClickHistory> value) {
-    this.clicks = value;
-  }
-
   /** Creates a new Target RecordBuilder */
   public static types.Target.Builder newBuilder() {
     return new types.Target.Builder();
@@ -136,7 +117,6 @@ public class Target extends org.apache.avro.specific.SpecificRecordBase implemen
     private java.lang.String id;
     private types.Coordinates origin;
     private int radius;
-    private java.util.List<types.ClickHistory> clicks;
 
     /** Creates a new Builder */
     private Builder() {
@@ -162,10 +142,6 @@ public class Target extends org.apache.avro.specific.SpecificRecordBase implemen
       if (isValidValue(fields()[2], other.radius)) {
         this.radius = data().deepCopy(fields()[2].schema(), other.radius);
         fieldSetFlags()[2] = true;
-      }
-      if (isValidValue(fields()[3], other.clicks)) {
-        this.clicks = data().deepCopy(fields()[3].schema(), other.clicks);
-        fieldSetFlags()[3] = true;
       }
     }
 
@@ -243,31 +219,6 @@ public class Target extends org.apache.avro.specific.SpecificRecordBase implemen
       return this;
     }
 
-    /** Gets the value of the 'clicks' field */
-    public java.util.List<types.ClickHistory> getClicks() {
-      return clicks;
-    }
-    
-    /** Sets the value of the 'clicks' field */
-    public types.Target.Builder setClicks(java.util.List<types.ClickHistory> value) {
-      validate(fields()[3], value);
-      this.clicks = value;
-      fieldSetFlags()[3] = true;
-      return this; 
-    }
-    
-    /** Checks whether the 'clicks' field has been set */
-    public boolean hasClicks() {
-      return fieldSetFlags()[3];
-    }
-    
-    /** Clears the value of the 'clicks' field */
-    public types.Target.Builder clearClicks() {
-      clicks = null;
-      fieldSetFlags()[3] = false;
-      return this;
-    }
-
     @Override
     public Target build() {
       try {
@@ -275,7 +226,6 @@ public class Target extends org.apache.avro.specific.SpecificRecordBase implemen
         record.id = fieldSetFlags()[0] ? this.id : (java.lang.String) defaultValue(fields()[0]);
         record.origin = fieldSetFlags()[1] ? this.origin : (types.Coordinates) defaultValue(fields()[1]);
         record.radius = fieldSetFlags()[2] ? this.radius : (java.lang.Integer) defaultValue(fields()[2]);
-        record.clicks = fieldSetFlags()[3] ? this.clicks : (java.util.List<types.ClickHistory>) defaultValue(fields()[3]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
