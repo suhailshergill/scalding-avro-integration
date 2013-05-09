@@ -77,8 +77,8 @@ object AggregateBuild extends Build {
       libraryDependencies ++= Seq(
         "org.xerial.snappy" % "snappy-java" % "1.0.5-M3"
       ),
-      mainClass in (Compile, run) := Some("JobRunner"),
-      mainClass in (Compile, assembly) := Some("JobRunner"),
+      mainClass in (Compile, run) := Some("com.twitter.scalding.Tool"),
+      mainClass in (Compile, assembly) := Some("com.twitter.scalding.Tool"),
       excludedJars in assembly <<= (fullClasspath in assembly) map { cp =>
         cp.filter(jar => commonExcludedJars.apply(jar.data.getName))
       },
