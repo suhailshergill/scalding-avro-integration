@@ -4,7 +4,7 @@ import java.io.File
 import java.util.ArrayList
 import scala.collection.JavaConverters._
 import cascading.tuple.Tuple
-import com.twitter.scalding.{Args, Job, Tsv}
+import com.twitter.scalding._
 import org.apache.avro.Protocol
 import scalding.avro.UnpackedAvroSource
 import types._
@@ -24,6 +24,8 @@ import types._
   */
 class GenericExample(args: Args) extends Job(args) {
 
+  private val defaultInputUrl = getClass.getResource("/data/images.avro")
+
   // optional: if the schema is not present on the classpath, UnpackedAvroSource will read it from the data file
   val colorSchema = {
     val resource = getClass.getResource("/generic_example.avpr")
@@ -31,7 +33,8 @@ class GenericExample(args: Args) extends Job(args) {
     Protocol.parse(file).getType("Image")
   }
 
-  UnpackedAvroSource(args("input"), schema = Some(colorSchema))
+  /** If no "--input /path/to/datafile" argument is given, use the example datafile on the classpath */
+  UnpackedAvroSource(args.getOrElse("input", defaultInputUrl.toString), schema = Some(colorSchema))
     .read
     .flatMapTo('colors -> ('name, 'red, 'green, 'blue)) { colors: ArrayList[Tuple] =>
       for (color <- colors.asScala if color.getInteger(3) == 255) yield (
@@ -48,10 +51,10 @@ class GenericExample(args: Args) extends Job(args) {
       _.sortBy('count)
     }
     .debug
-    .write(Tsv(args("output")))
+    .write(NullSource)
 }
 
-/** For data generation only, this should remain commented out as long as Image and Color sources do NOT exist on the classpath. */
+/** For data generation only, this should remain commented out as long as Image and Color sources DO NOT EXIST on the classpath. */
 /*
 object GenericExample {
 
@@ -72,9 +75,9 @@ object GenericExample {
     (field.getName, field.get(null).asInstanceOf[java.awt.Color])
   }
 
-  // generate avro data file containing n images
+  // generate avro datafile containing n images
   def main(args: Array[String]) {
-    val file = new File("/tmp/images.avro")
+    val file = new File(args(1))
     val writer = new DataFileWriter[Image](new SpecificDatumWriter[Image](classOf[Image]))
     writer.create(Image.getClassSchema(), file)
     Seq.fill(args(0).toInt)(randomImage).foreach(writer.append)

@@ -1,7 +1,7 @@
 package jobs
 
 import scala.collection.JavaConverters._
-import com.twitter.scalding.{Args, Job, Tsv}
+import com.twitter.scalding._
 import scalding.avro.PackedAvroSource
 import types._
 
@@ -18,6 +18,8 @@ import types._
   */
 class SpecificExample(args: Args) extends Job(args) {
 
+  private val defaultInputUrl = getClass.getResource("/data/documents.avro")
+
   /** Euclidean distance between two points */
   def distance(a: Coordinates, b: Coordinates): Double = {
     math.sqrt(math.pow(a.getX - b.getX, 2) + math.pow(a.getY - b.getY, 2))
@@ -28,7 +30,8 @@ class SpecificExample(args: Args) extends Job(args) {
     math.pow(a.getX - origin.getX, 2) + math.pow(a.getY - origin.getY, 2) <= math.pow(radius, 2)
   }
 
-  PackedAvroSource[Document](args("input"))
+  /** If no "--input /path/to/datafile" argument is given, use the example datafile on the classpath */
+  PackedAvroSource[Document](args.getOrElse("input", defaultInputUrl.toString))
     .read
     .flatMapTo('Document -> ('documentId, 'targetId, 'sessionId, 'bullseye, 'click, 'distance)) { doc: Document =>
       doc.getTargets.asScala.flatMap { target =>
@@ -52,7 +55,7 @@ class SpecificExample(args: Args) extends Job(args) {
       _.sortBy('distance)
     }
     .debug
-    .write(Tsv(args("output")))
+    .write(NullSource)
 }
 
 object SpecificExample {
@@ -63,9 +66,9 @@ object SpecificExample {
   import org.apache.avro.file._
   import org.apache.avro.specific._
 
-  // generate avro data file containing n targets
+  // generate avro datafile containing n targets
   def main(args: Array[String]) {
-    val file = new File("/tmp/documents.avro")
+    val file = new File(args(1))
     val writer = new DataFileWriter[Document](new SpecificDatumWriter[Document](classOf[Document]))
     writer.create(Document.getClassSchema(), file)
     Seq.fill(args(0).toInt)(randomDocument).foreach(writer.append)
