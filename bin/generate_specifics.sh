@@ -32,7 +32,6 @@ do
   compile_protocol $protocol
 done
 
-# append "generic_example" here if data generation is needed for GenericExample job
 declare -a idls=("specific_example")
 
 for idl in ${idls[@]}
