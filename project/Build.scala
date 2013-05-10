@@ -78,7 +78,8 @@ object AggregateBuild extends Build {
         "org.xerial.snappy" % "snappy-java" % "1.0.5-M3"
       ),
       mainClass in (Compile, run) := Some("com.twitter.scalding.Tool"),
-      mainClass in (Compile, assembly) := Some("com.twitter.scalding.Tool"),
+      mainClass in assembly := Some("com.twitter.scalding.Tool"),
+      jarName in assembly := "first-party.jar",
       excludedJars in assembly <<= (fullClasspath in assembly) map { cp =>
         cp.filter(jar => commonExcludedJars.apply(jar.data.getName))
       },
