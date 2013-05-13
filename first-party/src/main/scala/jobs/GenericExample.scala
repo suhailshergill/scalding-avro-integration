@@ -8,6 +8,7 @@ import com.twitter.scalding._
 import org.apache.avro.Protocol
 import scalding.avro.UnpackedAvroSource
 import types._
+import util.JobUtil
 
 /** Generates a histogram of opaque colors that appear in a given set of images.
   *
@@ -22,9 +23,9 @@ import types._
   *   - Count the occurences of opaque colors over all the images in our input set.
   *   - Sort by the frequency of occurence.
   */
-class GenericExample(args: Args) extends Job(args) {
+class GenericExample(args: Args) extends Job(args) with JobUtil {
 
-  private val defaultInputUrl = getClass.getResource("/data/images.avro")
+  override lazy val defaultLocalFsInput = getClass.getResource("/data/images.avro").toString
 
   // optional: if the schema is not present on the classpath, UnpackedAvroSource will read it from the data file
   val colorSchema = {
@@ -33,8 +34,7 @@ class GenericExample(args: Args) extends Job(args) {
     Protocol.parse(file).getType("Image")
   }
 
-  /** If no "--input /path/to/datafile" argument is given, use the example datafile on the classpath */
-  UnpackedAvroSource(args.getOrElse("input", defaultInputUrl.toString), schema = Some(colorSchema))
+  UnpackedAvroSource(input, schema = Some(colorSchema))
     .read
     .flatMapTo('colors -> ('name, 'red, 'green, 'blue)) { colors: ArrayList[Tuple] =>
       for (color <- colors.asScala if color.getInteger(3) == 255) yield (
@@ -51,5 +51,5 @@ class GenericExample(args: Args) extends Job(args) {
       _.sortBy('count)
     }
     .debug
-    .write(NullSource)
+    .write(Option(output).map(Tsv(_)).getOrElse(NullSource))
 }

@@ -4,6 +4,7 @@ import scala.collection.JavaConverters._
 import com.twitter.scalding._
 import scalding.avro.PackedAvroSource
 import types._
+import util.JobUtil
 
 /** Enumerates a list of "clicks" that are nearest a given document's "targets".
   *
@@ -16,9 +17,9 @@ import types._
   *   - Calculate the distance between "target clicks" and the target's center point.
   *   - Sort the resulting list of "target clicks" by their distance to the center point.
   */
-class SpecificExample(args: Args) extends Job(args) {
+class SpecificExample(args: Args) extends Job(args) with JobUtil {
 
-  private val defaultInputUrl = getClass.getResource("/data/documents.avro")
+  override lazy val defaultLocalFsInput = getClass.getResource("/data/documents.avro").toString
 
   /** Euclidean distance between two points */
   def distance(a: Coordinates, b: Coordinates): Double = {
@@ -30,8 +31,7 @@ class SpecificExample(args: Args) extends Job(args) {
     math.pow(a.getX - origin.getX, 2) + math.pow(a.getY - origin.getY, 2) <= math.pow(radius, 2)
   }
 
-  /** If no "--input /path/to/datafile" argument is given, use the example datafile on the classpath */
-  PackedAvroSource[Document](args.getOrElse("input", defaultInputUrl.toString))
+  PackedAvroSource[Document](input)
     .read
     .flatMapTo('Document -> ('documentId, 'targetId, 'sessionId, 'bullseye, 'click, 'distance)) { doc: Document =>
       doc.getTargets.asScala.flatMap { target =>
@@ -55,7 +55,7 @@ class SpecificExample(args: Args) extends Job(args) {
       _.sortBy('distance)
     }
     .debug
-    .write(NullSource)
+    .write(Option(output).map(Tsv(_)).getOrElse(NullSource))
 }
 
 object SpecificExample {
