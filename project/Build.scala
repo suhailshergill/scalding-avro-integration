@@ -51,11 +51,13 @@ object AggregateBuild extends Build {
     case fp if fp.endsWith(".html") => MergeStrategy.last
   }
 
-  val generateSpecifics = TaskKey[Unit]("generate-specifics", "Generate Java sources from avro schemas")
+  val generateSpecifics = InputKey[Unit]("generate-specifics", "Generate Java sources from avro schemas")
 
-  val generateSpecificsTask = generateSpecifics <<= (managedClasspath in Compile).map { cp =>
-    cp.files.find(_.getName.contains("avro-tools")).foreach { file =>
-      ("bin/generate_specifics.sh " + file.getAbsolutePath) !
+  val generateSpecificsTask = generateSpecifics <<= inputTask {
+    (_, managedClasspath in Compile).map { (args, cp) =>
+      cp.files.find(_.getName.contains("avro-tools")).foreach { file =>
+        ("bin/generate_specifics.sh " + (file.getAbsolutePath :: args.toList).mkString(" ")) !
+      }
     }
   }
 
