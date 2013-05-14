@@ -1,0 +1,22 @@
+Copyright 2013 Tapad
+
+scalding-avro-integration depends on the following open source projects:
+
+scalding.avro
+https://github.com/ccsevers/scalding.avro
+
+cascading.avro-scheme
+Apache Public License 2.0
+https://github.com/bixolabs/cascading.avro
+
+Scalding 0.8.2
+Apache Public License 2.0
+https://github.com/Tapad/scalding
+
+Cascading 2.0
+Apache Public License 2.0
+http://www.cascading.org
+
+Hadoop 0.20.2
+Apache Public License 2.0
+http://hadoop.apache.org
