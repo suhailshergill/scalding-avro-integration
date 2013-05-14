@@ -38,10 +38,10 @@ class GenericExample(args: Args) extends Job(args) with JobUtil {
     .read
     .flatMapTo('colors -> ('name, 'red, 'green, 'blue)) { colors: ArrayList[Tuple] =>
       for (color <- colors.asScala if color.getInteger(3) == 255) yield (
+        color.getString(4),
         color.getInteger(0),
         color.getInteger(1),
-        color.getInteger(2),
-        color.getString(4)
+        color.getInteger(2)
       )
     }
     .groupBy('name, 'red, 'green, 'blue) {
