@@ -2,6 +2,13 @@ scalding-avro-integration
 =========================
 A project skeleton for running scalding jobs against avro datafiles.
 
+Motivation
+----------
+We feel that it's desirable to use the serialization format that *you bet on* across all of the tools in your Hadoop environment&mdash;
+even if it's not entirely obvious how to do so.
+
+Utilizing the [cascading.avro](https://github.com/Tapad/cascading.avro) and [scalding.avro](https://github.com/Tapad/scalding.avro) projects, we wanted to build out a project structure that was turn-key and would give users the ability to script scalding jobs against avro datafiles without worrying about the glue between it all.
+
 Setup
 -----
 Clone the repository and initialize the required submodules:
